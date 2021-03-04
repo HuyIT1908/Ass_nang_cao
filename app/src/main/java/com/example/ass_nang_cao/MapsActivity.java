@@ -62,7 +62,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 }catch (Exception ex){
                     Log.e("--------------------" , ex.toString());
                     AlertDialog.Builder builder = new AlertDialog.Builder(MapsActivity.this);
-                    builder.setTitle("Thông Báo").setMessage("Bạn cần bật 3G/4G, Wifi hoặc GPS. \n\nĐể lấy vị trí");
+                    builder.setTitle("Thông Báo").setMessage("Bạn cần bật 3G/4G, Wifi và GPS. \n\nĐể lấy vị trí");
 
                     AlertDialog dialog = builder.create();
                     dialog.show();

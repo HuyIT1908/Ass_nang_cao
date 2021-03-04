@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import androidx.annotation.Nullable;
 
 import com.example.ass_nang_cao.DAO.KhoaHocDAO;
+import com.example.ass_nang_cao.DAO.LichHocDAO;
 import com.example.ass_nang_cao.Models.KhoaHoc;
 
 public class DatabaseASS extends SQLiteOpenHelper {
@@ -21,11 +22,13 @@ public class DatabaseASS extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         sqLiteDatabase.execSQL(KhoaHocDAO.SQL_Khoa_Hoc);
+        sqLiteDatabase.execSQL(LichHocDAO.SQL_Lich_Hoc);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
         sqLiteDatabase.execSQL("Drop table if exists " + KhoaHocDAO.TABLE_NAME);
+        sqLiteDatabase.execSQL("Drop table if exists " + LichHocDAO.TABLE_NAME);
 
         onCreate(sqLiteDatabase);
     }
