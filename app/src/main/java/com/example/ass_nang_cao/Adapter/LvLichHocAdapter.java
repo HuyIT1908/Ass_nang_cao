@@ -12,33 +12,36 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.ass_nang_cao.DAO.KhoaHocDAO;
+import com.example.ass_nang_cao.DAO.LichHocDAO;
 import com.example.ass_nang_cao.Models.KhoaHoc;
+import com.example.ass_nang_cao.Models.LichHoc;
 import com.example.ass_nang_cao.R;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class LvLichHocAdapter extends BaseAdapter {
     Context context;
-    List<KhoaHoc> khoaHocList = new ArrayList<>();
-    KhoaHocDAO khoaHocDAO;
+    List<LichHoc> lichHocList = new ArrayList<>();
+    LichHocDAO lichHocDAO;
     SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 
-    public LvLichHocAdapter(Context context, List<KhoaHoc> khoaHocList) {
+    public LvLichHocAdapter(Context context, List<LichHoc> lichHocList) {
         this.context = context;
-        this.khoaHocList = khoaHocList;
-        khoaHocDAO = new KhoaHocDAO(context);
+        this.lichHocList = lichHocList;
+        lichHocDAO = new LichHocDAO(context);
     }
 
     @Override
     public int getCount() {
-        return khoaHocList.size();
+        return lichHocList.size();
     }
 
     @Override
     public Object getItem(int i) {
-        return khoaHocList.get(i);
+        return lichHocList.get(i);
     }
 
     @Override
@@ -48,20 +51,25 @@ public class LvLichHocAdapter extends BaseAdapter {
 
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
-        DsKhoaHoc dsKhoaHoc;
+        DsLichHoc dsLichHoc;
         if (view == null){
-            dsKhoaHoc = new DsKhoaHoc();
+            dsLichHoc = new DsLichHoc();
 
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            view = inflater.inflate(R.layout.ds_khoa_hoc , null);
+            view = inflater.inflate(R.layout.show_lich_hoc , null);
 
-            dsKhoaHoc.maKH = view.findViewById(R.id.tv_ma_kh);
-            dsKhoaHoc.tenKH = view.findViewById(R.id.tv_ten_kh);
-            dsKhoaHoc.ngayBD = view.findViewById(R.id.tv_ngay_bd);
-            dsKhoaHoc.ngayKT = view.findViewById(R.id.tv_ngay_kt);
-            dsKhoaHoc.img_delete = view.findViewById(R.id.ivDelete_khoa_hoc);
+            dsLichHoc.ca = view.findViewById(R.id.tv_ca);
+            dsLichHoc.maMon = view.findViewById(R.id.tv_ma_mon);
+            dsLichHoc.tenMOn = view.findViewById(R.id.tv_ten_mon);
+            dsLichHoc.lop = view.findViewById(R.id.tv_lop);
+            dsLichHoc.phong = view.findViewById(R.id.tv_phong);
+            dsLichHoc.ngay = view.findViewById(R.id.tv_ngay);
+            dsLichHoc.gio_bat_dau = view.findViewById(R.id.tv_gio_bd);
+            dsLichHoc.gio_ket_thuc = view.findViewById(R.id.tv_gio_kt);
 
-            dsKhoaHoc.img_delete.setOnClickListener(new View.OnClickListener() {
+            dsLichHoc.img_delete = view.findViewById(R.id.imv_delete_lich_hoc);
+
+            dsLichHoc.img_delete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(context);
@@ -69,8 +77,8 @@ public class LvLichHocAdapter extends BaseAdapter {
                     builder.setPositiveButton("Xóa", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            khoaHocDAO.delete_khoa_hoc_By_ID(khoaHocList.get(i).getMaKH());
-                            khoaHocList.remove(i);
+                            lichHocDAO.delete_Lich_Hoc_By_ID(lichHocList.get(i).getCa());
+                            lichHocList.remove(i);
                             notifyDataSetChanged();
                             Toast.makeText(context, "Đã xóa thành công !!!",Toast.LENGTH_SHORT).show();
                         }
@@ -85,23 +93,33 @@ public class LvLichHocAdapter extends BaseAdapter {
                     dialog.show();
                 }
             });
-            view.setTag(dsKhoaHoc);
+            view.setTag(dsLichHoc);
         } else {
-            dsKhoaHoc = (DsKhoaHoc) view.getTag();
+            dsLichHoc = (DsLichHoc) view.getTag();
         }
 
-        dsKhoaHoc.maKH.setText("Mã khóa học :  " + khoaHocList.get(i).getMaKH() );
-        dsKhoaHoc.tenKH.setText("Tên khóa học :  " + khoaHocList.get(i).getTenKH() );
-        dsKhoaHoc.ngayBD.setText("Ngày bắt đầu :  " + sdf.format(khoaHocList.get(i).getNgayBatDau()) );
-        dsKhoaHoc.ngayKT.setText("Ngày kết thúc :  " + sdf.format(khoaHocList.get(i).getNgayKetThuc()) );
+        dsLichHoc.ca.setText("CA :  " + lichHocList.get(i).getCa());
+        dsLichHoc.maMon.setText("Mã môn :  " + lichHocList.get(i).getMaMon());
+        dsLichHoc.tenMOn.setText("Tên môn :  " + lichHocList.get(i).getTenMOn());
+        dsLichHoc.lop.setText("Lớp :  " + lichHocList.get(i).getLop());
+        dsLichHoc.phong.setText("Phòng :  " + lichHocList.get(i).getPhong());
+
+        dsLichHoc.ngay.setText("Ngày :  " + sdf.format( lichHocList.get(i).getNgay() ) );
+
+        dsLichHoc.gio_bat_dau.setText("Giờ bắt đầu  " + lichHocList.get(i).getGio_bat_dau());
+        dsLichHoc.gio_ket_thuc.setText("Giờ kết thúc  " + lichHocList.get(i).getGio_ket_thuc());
         return view;
     }
 
-    public static class DsKhoaHoc{
-        TextView maKH;
-        TextView tenKH;
-        TextView ngayBD;
-        TextView ngayKT;
+    public static class DsLichHoc{
+        TextView ca;
+        TextView maMon;
+        TextView tenMOn;
+        TextView lop ;
+        TextView phong;
+        TextView ngay ;
+        TextView gio_bat_dau;
+        TextView gio_ket_thuc;
         ImageView img_delete;
     }
 

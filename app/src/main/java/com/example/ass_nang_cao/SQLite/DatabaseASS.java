@@ -12,7 +12,7 @@ import com.example.ass_nang_cao.Models.KhoaHoc;
 
 public class DatabaseASS extends SQLiteOpenHelper {
     public static final String DATABASE_NAME = "dbEducationManager";
-    public static final int VERSION = 1;
+    public static final int VERSION = 3;
 
     public DatabaseASS(@Nullable Context context) {
         super(context, DATABASE_NAME + ".db", null, VERSION);
