@@ -21,6 +21,7 @@ public class LichHocDAO {
     private DatabaseASS dbHelper;
 
     public static final String TABLE_NAME = "LichHoc";
+    public static final String column_CA = "ca";
     public static final String column_maMon = "maMon";
     public static final String column_tenMOn = "tenMon";
     public static final String column_Lop = "lop";
@@ -32,7 +33,8 @@ public class LichHocDAO {
 
 
     public static final String SQL_Lich_Hoc = "CREATE TABLE " + TABLE_NAME + " (" +
-            column_maMon + " text primary key," +
+            column_CA + " text primary key," +
+            column_maMon + " text," +
             column_tenMOn + " text," +
             column_Lop + " text," +
             column_phong + " text," +
@@ -53,6 +55,7 @@ public class LichHocDAO {
 
         ContentValues values = new ContentValues();
 
+        values.put(column_CA, lichHoc.getCa() );
         values.put(column_maMon, lichHoc.getMaMon() );
         values.put(column_tenMOn, lichHoc.getTenMOn());
         values.put(column_Lop, lichHoc.getLop());
@@ -73,86 +76,100 @@ public class LichHocDAO {
         return 1;
     }
 
-//    public List<KhoaHoc> getAll_Khoa_Hoc() throws ParseException {
-//
-//        List<KhoaHoc> dsKhoaHoc = new ArrayList<>();
-//
-//        Cursor c = db.query(TABLE_NAME, null, null, null, null, null, null);
-//        c.moveToFirst();
-//
-//        while (c.isAfterLast() == false) {
-//            KhoaHoc khoaHoc = new KhoaHoc();
-//            khoaHoc.setMaKH(c.getString(0));
-//            khoaHoc.setTenKH( c.getString(1) );
-//            khoaHoc.setNgayBatDau( sdf.parse( c.getString(2)) );
-//            khoaHoc.setNgayKetThuc( sdf.parse( c.getString(3)) );
-//
-//            dsKhoaHoc.add(khoaHoc);
-//            Log.d(TAG + "//========", khoaHoc.toString());
-//            c.moveToNext();
-//        }
-//        c.close();
-//        return dsKhoaHoc;
-//    }
-//
-//    public int update_khoa_hoc(KhoaHoc khoaHoc) {
-//
-//        ContentValues values = new ContentValues();
-//        values.put(column_maKH, khoaHoc.getMaKH());
-//        values.put(column_tenKH, khoaHoc.getTenKH());
-//        values.put(column_ngay_bat_dau, sdf.format(khoaHoc.getNgayBatDau()) );
-//        values.put(column_ngay_ket_thuc , sdf.format(khoaHoc.getNgayKetThuc()) );
-//
-//        int result = db.update(TABLE_NAME, values, column_maKH + "=?",
-//                new String[]{khoaHoc.getMaKH()} );
-//        if (result == 0) {
-////            Nếu cập nhật thất bại thì trả về -1
-//            return -1;
-//        }
-////        Nếu cập nhật thành công thì trả về 1
-//        return 1;
-//    }
-//
-//    public int delete_khoa_hoc_By_ID(String ma_Khoa_Hoc) {
-//        int result = db.delete(TABLE_NAME, column_maKH + "=?", new String[]{ma_Khoa_Hoc});
-//
-//        if (result == 0){
-////            Nếu xóa THẤT BẠI thì trả về -1
-//            return -1;
-//        }
-////        Nếu xóa THÀNH CÔNG thì trả về 1
-//        return 1;
-//    }
-//
-//    public boolean validation_ma_khoa_hoc(KhoaHoc khoaHoc) throws ParseException {
-//        int result = 0;
-//        List<KhoaHoc> dsKhoaHoc = new ArrayList<>();
-//
-//        Cursor c = db.query(TABLE_NAME, null, null, null, null, null, null);
-//        c.moveToFirst();
-//
-//        while (c.isAfterLast() == false) {
-//
-//            String maKH = c.getString(0);
-//            String tenKH = c.getString(1) ;
-//            Date ngayBD = sdf.parse( c.getString(2)) ;
-//            Date ngayKT = sdf.parse( c.getString(3)) ;
-//
-//            if (khoaHoc.getMaKH().equalsIgnoreCase(maKH) ){
-//                c.close();
-//                Log.e("kiem tra roi nha" , "------------------da thanh cong roi");
-//                return true;
-//            }
-//
-//            dsKhoaHoc.add(khoaHoc);
-//            Log.d(TAG + "//========", khoaHoc.toString());
-//            c.moveToNext();
-//        }
-//        c.close();
-//
-//        if (result == 0){
-//            return false;
-//        }
-//        return true;
-//    }
+    public List<LichHoc> getAll_Lich_Hoc() throws ParseException {
+
+        List<LichHoc> lichHocList = new ArrayList<>();
+
+        Cursor c = db.query(TABLE_NAME, null, null, null, null, null, null);
+        c.moveToFirst();
+
+        while (c.isAfterLast() == false) {
+            LichHoc lichHoc = new LichHoc();
+
+            lichHoc.setCa(c.getString(0));
+            lichHoc.setMaMon(c.getString(1));
+            lichHoc.setTenMOn(c.getString(2));
+            lichHoc.setLop(c.getString(3));
+            lichHoc.setPhong(c.getString(4));
+            lichHoc.setNgay( sdf.parse( c.getString(5)) );
+            lichHoc.setGio_bat_dau(c.getString(6));
+            lichHoc.setGio_ket_thuc(c.getString(7));
+
+            lichHocList.add(lichHoc);
+            Log.d(TAG + "//=========", lichHoc.toString());
+            c.moveToNext();
+        }
+        c.close();
+        return lichHocList;
+    }
+
+    public int update_Lich_Hoc(LichHoc lichHoc) {
+
+        ContentValues values = new ContentValues();
+
+        values.put(column_CA, lichHoc.getCa() );
+        values.put(column_maMon, lichHoc.getMaMon() );
+        values.put(column_tenMOn, lichHoc.getTenMOn());
+        values.put(column_Lop, lichHoc.getLop());
+        values.put(column_phong, lichHoc.getPhong());
+        values.put(column_ngay, sdf.format(lichHoc.getNgay()) );
+        values.put(column_gio_bat_dau, lichHoc.getGio_bat_dau() );
+        values.put(column_gio_ket_thuc, lichHoc.getGio_ket_thuc() );
+
+        int result = db.update(TABLE_NAME, values, column_CA + "=?",
+                new String[]{ lichHoc.getCa() } );
+        if (result == 0) {
+//            Nếu cập nhật thất bại thì trả về -1
+            return -1;
+        }
+//        Nếu cập nhật thành công thì trả về 1
+        return 1;
+    }
+
+    public int delete_Lich_Hoc_By_ID(String ca) {
+        int result = db.delete(TABLE_NAME, column_CA + "=?", new String[]{ ca });
+
+        if (result == 0){
+//            Nếu xóa THẤT BẠI thì trả về -1
+            return -1;
+        }
+//        Nếu xóa THÀNH CÔNG thì trả về 1
+        return 1;
+    }
+
+    public boolean validation_CA(LichHoc lichHoc) throws ParseException {
+        int result = 0;
+        List<LichHoc> lichHocList = new ArrayList<>();
+
+        Cursor c = db.query(TABLE_NAME, null, null, null, null, null, null);
+        c.moveToFirst();
+
+        while (c.isAfterLast() == false) {
+
+            String ca = c.getString(0);
+            String maMonHoc = c.getString(1) ;
+            String tenMonHoc = c.getString(2) ;
+            String lop = c.getString(3) ;
+            String phong = c.getString(4) ;
+            Date ngay = sdf.parse( c.getString(5) ) ;
+            String gio_bat_dau = c.getString(6) ;
+            String gio_ket_thuc = c.getString(7) ;
+
+            if ( lichHoc.getCa().equalsIgnoreCase(ca) ){
+                c.close();
+                Log.e("\t\t kiem tra roi nha  " , "------------------ \t\tda thanh cong roi");
+                return true;
+            }
+
+            lichHocList.add(lichHoc);
+            Log.d(TAG + "//\t\t========", lichHocList.toString());
+            c.moveToNext();
+        }
+        c.close();
+
+        if (result == 0){
+            return false;
+        }
+        return true;
+    }
 }

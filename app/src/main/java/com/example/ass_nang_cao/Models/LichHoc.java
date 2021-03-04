@@ -3,6 +3,7 @@ package com.example.ass_nang_cao.Models;
 import java.util.Date;
 
 public class LichHoc {
+    String ca;
     String maMon;
     String tenMOn; 
     String Lop ;
@@ -14,7 +15,8 @@ public class LichHoc {
     public LichHoc() {
     }
 
-    public LichHoc(String maMon, String tenMOn, String lop, String phong, Date ngay, String gio_bat_dau, String gio_ket_thuc) {
+    public LichHoc(String ca, String maMon, String tenMOn, String lop, String phong, Date ngay, String gio_bat_dau, String gio_ket_thuc) {
+        this.ca = ca;
         this.maMon = maMon;
         this.tenMOn = tenMOn;
         Lop = lop;
@@ -22,6 +24,14 @@ public class LichHoc {
         this.ngay = ngay;
         this.gio_bat_dau = gio_bat_dau;
         this.gio_ket_thuc = gio_ket_thuc;
+    }
+
+    public String getCa() {
+        return ca;
+    }
+
+    public void setCa(String ca) {
+        this.ca = ca;
     }
 
     public String getMaMon() {
@@ -83,7 +93,8 @@ public class LichHoc {
     @Override
     public String toString() {
         return "LichHoc{" +
-                "maMon='" + maMon + '\'' +
+                "ca='" + ca + '\'' +
+                ", maMon='" + maMon + '\'' +
                 ", tenMOn='" + tenMOn + '\'' +
                 ", Lop='" + Lop + '\'' +
                 ", phong='" + phong + '\'' +

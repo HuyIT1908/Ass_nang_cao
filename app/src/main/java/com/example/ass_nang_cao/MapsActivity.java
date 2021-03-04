@@ -34,7 +34,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
-    private GoogleApiClient googleApiClient;
     FloatingActionButton btn_get_curren_location;
 
     @Override
@@ -47,10 +46,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mapFragment.getMapAsync(this);
 
         btn_get_curren_location = findViewById(R.id.floatingActionButton_map);
-        GetLocation getLocation = get_vi_tri_hien_tai();
+
         btn_get_curren_location.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                GetLocation getLocation = get_vi_tri_hien_tai();
                 LatLng haNoi = null;
                 try {
                     haNoi = new LatLng(getLocation.getLatitude(), getLocation.getLongitude());
@@ -59,7 +59,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     mMap.animateCamera(CameraUpdateFactory.zoomTo(15.0f));
 
                     mMap.getUiSettings().setZoomControlsEnabled(true);
-                }catch (Exception ex){
+                } catch (Exception ex){
                     Log.e("--------------------" , ex.toString());
                     AlertDialog.Builder builder = new AlertDialog.Builder(MapsActivity.this);
                     builder.setTitle("Thông Báo").setMessage("Bạn cần bật 3G/4G, Wifi và GPS. \n\nĐể lấy vị trí");
@@ -114,23 +114,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             // lay du lieu cho vao text
             LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
-            ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-            NetworkInfo wifi = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+            //            lay gps tu vi tri cuoi cung luu tren thiet bi
+            Location location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
 
-            NetworkInfo mobile_3g = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
-            if (mobile_3g.isConnected() || wifi.isConnected()){
-                //            lay gps tu vi tri cuoi cung luu tren thiet bi
-                Location location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+            if (location != null){
+                latitude = location.getLatitude();
+                longitude = location.getLongitude();
+                getLocation.setLatitude(latitude);
+                getLocation.setLongitude(longitude);
 
-                if (location != null){
-                    latitude = location.getLatitude();
-                    longitude = location.getLongitude();
-                    getLocation.setLatitude(latitude);
-                    getLocation.setLongitude(longitude);
-
-                    Toast.makeText(MapsActivity.this , "Get location Data network",Toast.LENGTH_SHORT).show();
+                Toast.makeText(MapsActivity.this , "Get location Data network",Toast.LENGTH_SHORT).show();
                 }
-            }
 //            lay gps tu internet hoac song gps cua thiet bi
             locationManager.requestLocationUpdates(locationManager.GPS_PROVIDER,
                     1000, 1,
