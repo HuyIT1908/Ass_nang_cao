@@ -152,4 +152,7 @@ public class HocTapActivity extends AppCompatActivity {
 //        intent.putExtras(bundle);
         startActivity(intent);
     }
+    public void ds_Lich_Hoc(View view){
+        startActivity(new Intent(HocTapActivity.this , LichHocActivity.class));
+    }
 }
